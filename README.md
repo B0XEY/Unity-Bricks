@@ -4,8 +4,8 @@
  Legos suck use bricks
 
 ## Features
-- Grid-based building
-- non-grid-based building
+- Grid-based and non-grid-based building
+- Unity Burst / Job
 - full object physics
 - Customize object color when placing
 ## To-Do
