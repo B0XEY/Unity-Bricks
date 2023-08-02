@@ -9,4 +9,4 @@
 - full object physics
 - Customize object color when placing
 ## To-Do
-- Everything
+- [ ] Everything
