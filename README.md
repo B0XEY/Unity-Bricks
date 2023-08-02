@@ -2,3 +2,11 @@
 
 # Unity-BRICKS - Unity 2022.3.5f1 - URP
  Legos suck use bricks
+
+## Features
+- Grid-based building
+- non-grid-based building
+- full object physics
+- Customize object color when placing
+## To-Do
+- Everything
