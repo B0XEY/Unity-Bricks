@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Boxey.Bricks.Core {
     public class BrickPlacer : MonoBehaviour {
@@ -8,10 +9,22 @@ namespace Boxey.Bricks.Core {
         private float m_height;
         private Vector3 m_brickStart;
         private Vector3 m_brickEnd;
-
+        private Mesh m_previewMesh;
+        
+        [Header("Preview OBJ")]
+        [SerializeField] private Transform previewObject;
+        [SerializeField] private MeshFilter previewFilter;
+        
+        [Header("Data")]
         [SerializeField] private bool useGrid;
         [SerializeField] private float gridSize = 1f;
         [SerializeField] private Camera playerCamera;
+
+        private void Awake() {
+            m_previewMesh = new Mesh {
+                name = "Preview Mesh"
+            };
+        }
 
         private void Update() {
             var r = playerCamera.ScreenPointToRay(Input.mousePosition);
@@ -26,6 +39,9 @@ namespace Boxey.Bricks.Core {
                     var height = position.y + m_height;
                     if (useGrid) height = SnapFloatToGrid(height);
                     m_brickEnd = new Vector3(position.x, height, position.z);
+                    
+                    previewObject.position = m_brickStart;
+                    CreatePreviewMesh();
                 }
                 if (Input.GetKeyUp(KeyCode.Mouse0)) {
                     var height = position.y + m_height;
@@ -39,6 +55,7 @@ namespace Boxey.Bricks.Core {
 
         private void PlaceBrick(Vector3 start, Vector3 end) {
             m_bricks.Add(new Brick(start, end));
+            m_previewMesh.Clear();
         }
         private Vector3 SnapPositionToGrid(Vector3 position) {
             var snappedX = Mathf.Round(position.x / gridSize) * gridSize;
@@ -48,6 +65,98 @@ namespace Boxey.Bricks.Core {
         }
         private float SnapFloatToGrid(float value) {
             return Mathf.Round(value / gridSize) * gridSize;
+        }
+        private void CreatePreviewMesh() {
+            var start = Vector3.zero;
+            var vertices = new Vector3[24] {
+                // Front face
+                new (start.x, start.y, start.z),
+                new (m_brickEnd.x, start.y, start.z),
+                new (start.x, m_brickEnd.y, start.z),
+                new (m_brickEnd.x, m_brickEnd.y, start.z),
+                // Back face
+                new (start.x, start.y, m_brickEnd.z),
+                new (m_brickEnd.x, start.y, m_brickEnd.z),
+                new (start.x, m_brickEnd.y, m_brickEnd.z),
+                new (m_brickEnd.x, m_brickEnd.y, m_brickEnd.z),
+                // Left face
+                new (start.x, start.y, start.z),
+                new (start.x, m_brickEnd.y, start.z),
+                new (start.x, start.y, m_brickEnd.z),
+                new (start.x, m_brickEnd.y, m_brickEnd.z),
+                // Right face
+                new (m_brickEnd.x, start.y, start.z),
+                new (m_brickEnd.x, m_brickEnd.y, start.z),
+                new (m_brickEnd.x, start.y, m_brickEnd.z),
+                new (m_brickEnd.x, m_brickEnd.y, m_brickEnd.z),
+                // Top face
+                new (start.x, m_brickEnd.y, start.z),
+                new (m_brickEnd.x, m_brickEnd.y, start.z),
+                new (start.x, m_brickEnd.y, m_brickEnd.z),
+                new (m_brickEnd.x, m_brickEnd.y, m_brickEnd.z),
+                // Bottom face
+                new (start.x, start.y, start.z),
+                new (m_brickEnd.x, start.y, start.z),
+                new (start.x, start.y, m_brickEnd.z),
+                new (m_brickEnd.x, start.y, m_brickEnd.z)
+            };
+            var triangles = new int[36] {
+                // Front
+                0, 2, 1,
+                1, 2, 3,
+                // Back
+                5, 7, 4,
+                4, 7, 6,
+                // Left
+                8, 10, 9,
+                9, 10, 11,
+                // Right
+                13, 15, 14,
+                13, 14, 12,
+                // Top
+                16, 18, 17,
+                17, 18, 19,
+                // Bottom
+                20, 21, 22,
+                22, 21, 23
+            };
+            var normals = new Vector3[24] {
+                // Front face
+                Vector3.forward,
+                Vector3.forward,
+                Vector3.forward,
+                Vector3.forward,
+                // Back face
+                Vector3.back,
+                Vector3.back,
+                Vector3.back,
+                Vector3.back,
+                // Left face
+                Vector3.left,
+                Vector3.left,
+                Vector3.left,
+                Vector3.left,
+                // Right face
+                Vector3.right,
+                Vector3.right,
+                Vector3.right,
+                Vector3.right,
+                // Top face
+                Vector3.up,
+                Vector3.up,
+                Vector3.up,
+                Vector3.up,
+                // Bottom face
+                Vector3.down,
+                Vector3.down,
+                Vector3.down,
+                Vector3.down
+            };
+            m_previewMesh.Clear();
+            m_previewMesh.vertices = vertices;
+            m_previewMesh.triangles = triangles;
+            m_previewMesh.normals = normals;
+            previewFilter.sharedMesh = m_previewMesh;
         }
         private void OnDrawGizmos() {
             if (!Application.isPlaying) return;
