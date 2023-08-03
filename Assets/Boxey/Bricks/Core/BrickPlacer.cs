@@ -29,6 +29,7 @@ namespace Boxey.Bricks.Core {
         private void Update() {
             var r = playerCamera.ScreenPointToRay(Input.mousePosition);
             m_height += Input.GetAxisRaw("Mouse ScrollWheel");
+            previewObject.position = m_brickStart;
             if (Physics.Raycast(r, out var hit)) {
                 var position = hit.point;
                 if (useGrid) position = SnapPositionToGrid(position);
@@ -39,7 +40,6 @@ namespace Boxey.Bricks.Core {
                     var height = position.y + m_height;
                     if (useGrid) height = SnapFloatToGrid(height);
                     m_brickEnd = new Vector3(position.x, height, position.z);
-                    previewObject.position = m_brickStart;
                     CreatePreviewMesh(m_brickEnd - m_brickStart);
                 }
                 if (Input.GetKeyUp(KeyCode.Mouse0)) {
@@ -47,13 +47,13 @@ namespace Boxey.Bricks.Core {
                     if (useGrid) height = SnapFloatToGrid(height);
                     m_brickEnd = new Vector3(position.x, height, position.z);
                     if (position == m_brickStart) return;
-                    PlaceBrick(m_brickStart);
+                    PlaceBrick();
                 }
             }
         }
 
-        private void PlaceBrick(Vector3 position) {
-            m_bricks.Add(new Brick(position, m_previewMesh));
+        private void PlaceBrick() {
+            m_bricks.Add(new Brick(m_brickStart, m_brickEnd));
             m_previewMesh.Clear();
         }
         private Vector3 SnapPositionToGrid(Vector3 position) {
