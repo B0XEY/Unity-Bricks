@@ -60,14 +60,14 @@ namespace Boxey.Bricks.Core {
                 5, 4, 0
             };
             var normals = new Vector3[8] {
-                Vector3.left,
                 Vector3.right,
-                Vector3.down,
+                Vector3.left,
                 Vector3.up,
-                Vector3.forward,
+                Vector3.down,
                 Vector3.back,
                 Vector3.forward,
-                Vector3.back
+                Vector3.back,
+                Vector3.forward
             };
 
             m_brickMesh.Clear();
