@@ -94,7 +94,7 @@ namespace Boxey.Bricks.Core {
             m_brickMesh.Clear();
             m_brickMesh.vertices = vertices;
             m_brickMesh.triangles = triangles;
-            m_brickMesh.RecalculateNormals();
+            m_brickMesh.normals = normals;
 
             m_brickFilter.sharedMesh = m_brickMesh;
             m_brickCollider.sharedMesh = m_brickMesh;
