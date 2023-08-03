@@ -2,8 +2,8 @@ using UnityEngine;
 
 namespace Boxey.Bricks.Extras {
     public class CameraMovement : MonoBehaviour {
-        private float _rotationX;
-        private float _rotationY;
+        private float m_rotationX;
+        private float m_rotationY;
         
         [Header("Movement")]
         [SerializeField] private float movementSpeed = 10f;
@@ -35,10 +35,10 @@ namespace Boxey.Bricks.Extras {
             var translationZ = Input.GetAxis("Vertical") * movementSpeed * Time.deltaTime * mult;
             transform.Translate(new Vector3(translationX, 0, translationZ));
             
-            _rotationX += Input.GetAxis("Mouse X") * rotationSpeed * Time.deltaTime;
-            _rotationY -= Input.GetAxis("Mouse Y") * rotationSpeed * Time.deltaTime;
-            _rotationY = Mathf.Clamp(_rotationY, -90f, 90f);
-            transform.rotation = Quaternion.Euler(_rotationY, _rotationX, 0f);
+            m_rotationX += Input.GetAxis("Mouse X") * rotationSpeed * Time.deltaTime;
+            m_rotationY -= Input.GetAxis("Mouse Y") * rotationSpeed * Time.deltaTime;
+            m_rotationY = Mathf.Clamp(m_rotationY, -90f, 90f);
+            transform.rotation = Quaternion.Euler(m_rotationY, m_rotationX, 0f);
         }
     }
 }

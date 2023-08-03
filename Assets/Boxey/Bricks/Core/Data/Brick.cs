@@ -24,7 +24,6 @@ namespace Boxey.Bricks.Core {
             m_brickFilter = BrickObject.AddComponent<MeshFilter>();
             m_brickRenderer = BrickObject.AddComponent<MeshRenderer>();
             m_brickCollider = BrickObject.AddComponent<MeshCollider>();
-            ClearData();
             CreateMesh(brickEnd - brickStart);
         }
         private void CreateMesh(Vector3 brickEnd) {
@@ -61,58 +60,8 @@ namespace Boxey.Bricks.Core {
                 new Vector3(start.x, start.y, brickEnd.z),
                 new Vector3(brickEnd.x, start.y, brickEnd.z)
             };
-            var triangles = new int[36] {
-                // Front
-                0, 2, 1,
-                1, 2, 3,
-                // Back
-                5, 7, 4,
-                4, 7, 6,
-                // Left
-                8, 10, 9,
-                9, 10, 11,
-                // Right
-                13, 15, 14,
-                13, 14, 12,
-                // Top
-                16, 18, 17,
-                17, 18, 19,
-                // Bottom
-                20, 21, 22,
-                22, 21, 23
-            };
-            var normals = new Vector3[24] {
-                // Front face
-                Vector3.forward,
-                Vector3.forward,
-                Vector3.forward,
-                Vector3.forward,
-                // Back face
-                Vector3.back,
-                Vector3.back,
-                Vector3.back,
-                Vector3.back,
-                // Left face
-                Vector3.left,
-                Vector3.left,
-                Vector3.left,
-                Vector3.left,
-                // Right face
-                Vector3.right,
-                Vector3.right,
-                Vector3.right,
-                Vector3.right,
-                // Top face
-                Vector3.up,
-                Vector3.up,
-                Vector3.up,
-                Vector3.up,
-                // Bottom face
-                Vector3.down,
-                Vector3.down,
-                Vector3.down,
-                Vector3.down
-            };
+            var triangles = BrickTables.CubicTriangles;
+            var normals = BrickTables.CubicNormals;
             m_brickMesh.Clear();
             m_brickMesh.vertices = vertices;
             m_brickMesh.triangles = triangles;
@@ -123,9 +72,6 @@ namespace Boxey.Bricks.Core {
             m_brickRenderer.sharedMaterial = new Material(Shader.Find("Universal Render Pipeline/Lit"));
             m_brickRenderer.sharedMaterial.SetFloat("_Smoothness", 0);
             m_brickRenderer.sharedMaterial.color = Random.ColorHSV();
-        }
-        private void ClearData() {
-            m_brickMesh.Clear();
         }
     }
 }

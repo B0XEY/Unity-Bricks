@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace Boxey.Bricks.Core {
-    public class BrickPlacer : MonoBehaviour {
+    public class BrickManager : MonoBehaviour {
         private List<Brick> m_bricks = new List<Brick>(); // List of all bricks placed
         private float m_height;
         private Vector3 m_brickStart;
@@ -102,64 +102,15 @@ namespace Boxey.Bricks.Core {
                 new Vector3(start.x, start.y, brickEnd.z),
                 new Vector3(brickEnd.x, start.y, brickEnd.z)
             };
-            var triangles = new int[36] {
-                // Front
-                0, 2, 1,
-                1, 2, 3,
-                // Back
-                5, 7, 4,
-                4, 7, 6,
-                // Left
-                8, 10, 9,
-                9, 10, 11,
-                // Right
-                13, 15, 14,
-                13, 14, 12,
-                // Top
-                16, 18, 17,
-                17, 18, 19,
-                // Bottom
-                20, 21, 22,
-                22, 21, 23
-            };
-            var normals = new Vector3[24] {
-                // Front face
-                Vector3.forward,
-                Vector3.forward,
-                Vector3.forward,
-                Vector3.forward,
-                // Back face
-                Vector3.back,
-                Vector3.back,
-                Vector3.back,
-                Vector3.back,
-                // Left face
-                Vector3.left,
-                Vector3.left,
-                Vector3.left,
-                Vector3.left,
-                // Right face
-                Vector3.right,
-                Vector3.right,
-                Vector3.right,
-                Vector3.right,
-                // Top face
-                Vector3.up,
-                Vector3.up,
-                Vector3.up,
-                Vector3.up,
-                // Bottom face
-                Vector3.down,
-                Vector3.down,
-                Vector3.down,
-                Vector3.down
-            };
+            var triangles = BrickTables.CubicTriangles;
+            var normals = BrickTables.CubicNormals;
             m_previewMesh.Clear();
             m_previewMesh.vertices = vertices;
             m_previewMesh.triangles = triangles;
             m_previewMesh.normals = normals;
             previewFilter.sharedMesh = m_previewMesh;
         }
+        
         private void OnDrawGizmos() {
             if (!Application.isPlaying) return;
             //Get Positions
