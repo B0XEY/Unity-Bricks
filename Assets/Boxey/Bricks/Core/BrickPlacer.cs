@@ -31,13 +31,13 @@ namespace Boxey.Bricks.Core {
                     var height = position.y + m_height;
                     if (useGrid) height = Mathf.RoundToInt(height);
                     m_brickEnd = new Vector3(position.x, height, position.z);
-                    PlaceBrick(m_brickStart, m_brickEnd, height);
+                    PlaceBrick(m_brickStart, m_brickEnd);
                 }
             }
         }
 
-        private void PlaceBrick(Vector3 start, Vector3 end, float height) {
-            m_bricks.Add(new Brick(start, end, height));
+        private void PlaceBrick(Vector3 start, Vector3 end) {
+            m_bricks.Add(new Brick(start, end));
         }
 
         private void OnDrawGizmos() {

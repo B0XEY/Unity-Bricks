@@ -9,11 +9,13 @@ namespace Boxey.Bricks.Core {
         private readonly MeshRenderer m_brickRenderer;
         private readonly MeshCollider m_brickCollider;
         
-        public Brick(Vector3 brickStart, Vector3 brickEnd, float brickHeight) {
+        public Brick(Vector3 brickStart, Vector3 brickEnd) {
+            var position = brickStart;
+            position.y += 0.00001f;
             BrickObject = new GameObject {
                 name = "Brick: " + brickStart,
                 transform = {
-                    position = brickStart
+                    position = position
                 }
             };
             m_brickMesh = new Mesh {
