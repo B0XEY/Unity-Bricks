@@ -1,18 +1,18 @@
 using System;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace Boxey.Bricks.Core {
     public class BrickManager : MonoBehaviour {
-        private List<Brick> m_bricks = new List<Brick>(); // List of all bricks placed
+        private Dictionary<GameObject, Brick> m_bricks = new Dictionary<GameObject, Brick>(); // List of all bricks placed
         private float m_height;
         private Vector3 m_brickStart;
         private Vector3 m_brickEnd;
         private Mesh m_previewMesh;
         
         [Header("Preview OBJ")]
-        [SerializeField] private Transform lookAtObject;
         [SerializeField] private Transform previewObj;
         [SerializeField] private MeshFilter previewFilter;
         
@@ -21,6 +21,9 @@ namespace Boxey.Bricks.Core {
         [SerializeField] private float gridSize = 1f;
         [SerializeField] private float scrollStrength = 1.5f;
         [SerializeField] private Camera playerCamera;
+        [Space] 
+        [SerializeField] private int numToPlace = 1;
+        [SerializeField] private int length;
 
         private void Awake() {
             m_previewMesh = new Mesh {
@@ -29,20 +32,23 @@ namespace Boxey.Bricks.Core {
         }
 
         private void Update() {
+            length = m_bricks.Count;
             var r = playerCamera.ScreenPointToRay(Input.mousePosition);
             m_height += Input.GetAxisRaw("Mouse ScrollWheel") * scrollStrength;
-            var previewPos = m_brickStart;
-            previewPos.y += 0.001f;
-            previewObj.position = previewPos;
             if (Physics.Raycast(r, out var hit)) {
                 var position = hit.point;
                 if (useGrid) position = SnapPositionToGrid(position);
-                lookAtObject.position = position;
+                previewObj.position = position;
+                CreatePreviewMesh(new float3(gridSize));
+                if (Input.GetKeyDown(KeyCode.Mouse1)) {
+                    DeleteBrick(hit);
+                }
                 if (Input.GetKeyDown(KeyCode.Mouse0)) {
                     m_brickStart = position;
                     m_height = gridSize;
                 }
                 if (Input.GetKey(KeyCode.Mouse0)) {
+                    previewObj.position = m_brickStart;
                     var height = position.y + m_height;
                     if (useGrid) height = SnapFloatToGrid(height);
                     m_brickEnd = new Vector3(position.x, height, position.z);
@@ -52,15 +58,28 @@ namespace Boxey.Bricks.Core {
                     var height = position.y + m_height;
                     if (useGrid) height = SnapFloatToGrid(height);
                     m_brickEnd = new Vector3(position.x, height, position.z);
-                    if (position == m_brickStart) return;
+                    if (position == m_brickStart) {
+                        m_brickEnd = new Vector3(position.x + gridSize, position.y + gridSize, position.z + gridSize);
+                    }
                     PlaceBrick();
                 }
             }
         }
 
         private void PlaceBrick() {
-            m_bricks.Add(new Brick(m_brickStart, m_brickEnd));
+            for (int x = 0; x < numToPlace; x++) {
+                for (int z = 0; z < numToPlace; z++) {
+                    var offset = new Vector3(x * gridSize, 0, z * gridSize);
+                    var brick = new Brick(m_brickStart + offset, m_brickEnd + offset);
+                    m_bricks.Add(brick.BrickObject, brick);
+                }
+            }
             m_previewMesh.Clear();
+        }
+        private void DeleteBrick(RaycastHit hitInfo) {
+            if (!hitInfo.transform.name.Contains("Brick")) return;
+            Destroy(hitInfo.transform.gameObject);
+            m_bricks.Remove(hitInfo.transform.gameObject);
         }
         private Vector3 SnapPositionToGrid(Vector3 position) {
             var snappedX = Mathf.Round(position.x / gridSize) * gridSize;

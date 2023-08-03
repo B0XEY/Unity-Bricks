@@ -24,6 +24,7 @@ namespace Boxey.Bricks.Core {
             m_brickFilter = BrickObject.AddComponent<MeshFilter>();
             m_brickRenderer = BrickObject.AddComponent<MeshRenderer>();
             m_brickCollider = BrickObject.AddComponent<MeshCollider>();
+            m_brickCollider.convex = true;
             CreateMesh(brickEnd - brickStart);
         }
         private void CreateMesh(Vector3 brickEnd) {
