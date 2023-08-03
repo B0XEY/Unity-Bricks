@@ -28,37 +28,38 @@ namespace Boxey.Bricks.Core {
         }
         private void CreateMesh(Vector3 brickEnd) {
             var start = Vector3.zero;
+            var end = brickEnd;
             var vertices = new Vector3[24] {
                 // Front face
                 new Vector3(start.x, start.y, start.z),
-                new Vector3(brickEnd.x, start.y, start.z),
-                new Vector3(start.x, brickEnd.y, start.z),
-                new Vector3(brickEnd.x, brickEnd.y, start.z),
+                new Vector3(end.x, start.y, start.z),
+                new Vector3(start.x, end.y, start.z),
+                new Vector3(end.x, end.y, start.z),
                 // Back face
-                new Vector3(start.x, start.y, brickEnd.z),
-                new Vector3(brickEnd.x, start.y, brickEnd.z),
-                new Vector3(start.x, brickEnd.y, brickEnd.z),
-                new Vector3(brickEnd.x, brickEnd.y, brickEnd.z),
+                new Vector3(start.x, start.y, end.z),
+                new Vector3(end.x, start.y, end.z),
+                new Vector3(start.x, end.y, end.z),
+                new Vector3(end.x, end.y, end.z),
                 // Left face
                 new Vector3(start.x, start.y, start.z),
-                new Vector3(start.x, brickEnd.y, start.z),
-                new Vector3(start.x, start.y, brickEnd.z),
-                new Vector3(start.x, brickEnd.y, brickEnd.z),
+                new Vector3(start.x, end.y, start.z),
+                new Vector3(start.x, start.y, end.z),
+                new Vector3(start.x, end.y, end.z),
                 // Right face
-                new Vector3(brickEnd.x, start.y, start.z),
-                new Vector3(brickEnd.x, brickEnd.y, start.z),
-                new Vector3(brickEnd.x, start.y, brickEnd.z),
-                new Vector3(brickEnd.x, brickEnd.y, brickEnd.z),
+                new Vector3(end.x, start.y, start.z),
+                new Vector3(end.x, end.y, start.z),
+                new Vector3(end.x, start.y, end.z),
+                new Vector3(end.x, end.y, end.z),
                 // Top face
-                new Vector3(start.x, brickEnd.y, start.z),
-                new Vector3(brickEnd.x, brickEnd.y, start.z),
-                new Vector3(start.x, brickEnd.y, brickEnd.z),
-                new Vector3(brickEnd.x, brickEnd.y, brickEnd.z),
+                new Vector3(start.x, end.y, start.z),
+                new Vector3(end.x, end.y, start.z),
+                new Vector3(start.x, end.y, end.z),
+                new Vector3(end.x, end.y, end.z),
                 // Bottom face
                 new Vector3(start.x, start.y, start.z),
-                new Vector3(brickEnd.x, start.y, start.z),
-                new Vector3(start.x, start.y, brickEnd.z),
-                new Vector3(brickEnd.x, start.y, brickEnd.z)
+                new Vector3(end.x, start.y, start.z),
+                new Vector3(start.x, start.y, end.z),
+                new Vector3(end.x, start.y, end.z)
             };
             var triangles = BrickTables.CubicTriangles;
             var normals = BrickTables.CubicNormals;
@@ -69,9 +70,8 @@ namespace Boxey.Bricks.Core {
 
             m_brickFilter.sharedMesh = m_brickMesh;
             m_brickCollider.sharedMesh = m_brickMesh;
-            m_brickRenderer.sharedMaterial = new Material(Shader.Find("Universal Render Pipeline/Lit"));
-            m_brickRenderer.sharedMaterial.SetFloat("_Smoothness", 0);
-            m_brickRenderer.sharedMaterial.color = Random.ColorHSV();
+            m_brickRenderer.sharedMaterial = new Material(Shader.Find("Shader Graphs/Brick"));
+            m_brickRenderer.sharedMaterial.SetColor("_color", Random.ColorHSV());
         }
     }
 }

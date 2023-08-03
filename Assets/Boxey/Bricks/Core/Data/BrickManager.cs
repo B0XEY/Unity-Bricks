@@ -12,7 +12,8 @@ namespace Boxey.Bricks.Core {
         private Mesh m_previewMesh;
         
         [Header("Preview OBJ")]
-        [SerializeField] private Transform previewObject;
+        [SerializeField] private Transform lookAtObject;
+        [SerializeField] private Transform previewObj;
         [SerializeField] private MeshFilter previewFilter;
         
         [Header("Data")]
@@ -32,10 +33,11 @@ namespace Boxey.Bricks.Core {
             m_height += Input.GetAxisRaw("Mouse ScrollWheel") * scrollStrength;
             var previewPos = m_brickStart;
             previewPos.y += 0.001f;
-            previewObject.position = previewPos;
+            previewObj.position = previewPos;
             if (Physics.Raycast(r, out var hit)) {
                 var position = hit.point;
                 if (useGrid) position = SnapPositionToGrid(position);
+                lookAtObject.position = position;
                 if (Input.GetKeyDown(KeyCode.Mouse0)) {
                     m_brickStart = position;
                 }
@@ -70,37 +72,38 @@ namespace Boxey.Bricks.Core {
         }
         private void CreatePreviewMesh(Vector3 brickEnd) {
             var start = Vector3.zero;
+            var end = brickEnd;
             var vertices = new Vector3[24] {
                 // Front face
                 new Vector3(start.x, start.y, start.z),
-                new Vector3(brickEnd.x, start.y, start.z),
-                new Vector3(start.x, brickEnd.y, start.z),
-                new Vector3(brickEnd.x, brickEnd.y, start.z),
+                new Vector3(end.x, start.y, start.z),
+                new Vector3(start.x, end.y, start.z),
+                new Vector3(end.x, end.y, start.z),
                 // Back face
-                new Vector3(start.x, start.y, brickEnd.z),
-                new Vector3(brickEnd.x, start.y, brickEnd.z),
-                new Vector3(start.x, brickEnd.y, brickEnd.z),
-                new Vector3(brickEnd.x, brickEnd.y, brickEnd.z),
+                new Vector3(start.x, start.y, end.z),
+                new Vector3(end.x, start.y, end.z),
+                new Vector3(start.x, end.y, end.z),
+                new Vector3(end.x, end.y, end.z),
                 // Left face
                 new Vector3(start.x, start.y, start.z),
-                new Vector3(start.x, brickEnd.y, start.z),
-                new Vector3(start.x, start.y, brickEnd.z),
-                new Vector3(start.x, brickEnd.y, brickEnd.z),
+                new Vector3(start.x, end.y, start.z),
+                new Vector3(start.x, start.y, end.z),
+                new Vector3(start.x, end.y, end.z),
                 // Right face
-                new Vector3(brickEnd.x, start.y, start.z),
-                new Vector3(brickEnd.x, brickEnd.y, start.z),
-                new Vector3(brickEnd.x, start.y, brickEnd.z),
-                new Vector3(brickEnd.x, brickEnd.y, brickEnd.z),
+                new Vector3(end.x, start.y, start.z),
+                new Vector3(end.x, end.y, start.z),
+                new Vector3(end.x, start.y, end.z),
+                new Vector3(end.x, end.y, end.z),
                 // Top face
-                new Vector3(start.x, brickEnd.y, start.z),
-                new Vector3(brickEnd.x, brickEnd.y, start.z),
-                new Vector3(start.x, brickEnd.y, brickEnd.z),
-                new Vector3(brickEnd.x, brickEnd.y, brickEnd.z),
+                new Vector3(start.x, end.y, start.z),
+                new Vector3(end.x, end.y, start.z),
+                new Vector3(start.x, end.y, end.z),
+                new Vector3(end.x, end.y, end.z),
                 // Bottom face
                 new Vector3(start.x, start.y, start.z),
-                new Vector3(brickEnd.x, start.y, start.z),
-                new Vector3(start.x, start.y, brickEnd.z),
-                new Vector3(brickEnd.x, start.y, brickEnd.z)
+                new Vector3(end.x, start.y, start.z),
+                new Vector3(start.x, start.y, end.z),
+                new Vector3(end.x, start.y, end.z)
             };
             var triangles = BrickTables.CubicTriangles;
             var normals = BrickTables.CubicNormals;
