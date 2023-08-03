@@ -71,9 +71,9 @@ namespace Boxey.Bricks.Core {
                 // Left
                 8, 10, 9,
                 9, 10, 11,
-                // Right X
+                // Right
+                13, 15, 14,
                 13, 14, 12,
-                14, 15, 12,
                 // Top
                 16, 18, 17,
                 17, 18, 19,

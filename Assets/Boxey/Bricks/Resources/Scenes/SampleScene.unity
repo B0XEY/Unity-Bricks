@@ -699,7 +699,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d98f276bfd71a3e488209feb9ecb50fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useGrid: 0
+  useGrid: 1
+  gridSize: 0.25
   playerCamera: {fileID: 330585545}
 --- !u!4 &1739765190
 Transform:

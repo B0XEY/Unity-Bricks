@@ -10,6 +10,7 @@ namespace Boxey.Bricks.Core {
         private Vector3 m_brickEnd;
 
         [SerializeField] private bool useGrid;
+        [SerializeField] private float gridSize = 1f;
         [SerializeField] private Camera playerCamera;
 
         private void Update() {
@@ -17,19 +18,18 @@ namespace Boxey.Bricks.Core {
             m_height += Input.GetAxisRaw("Mouse ScrollWheel");
             if (Physics.Raycast(r, out var hit)) {
                 var position = hit.point;
-                if (useGrid) position = new Vector3(Mathf.RoundToInt(hit.point.x),Mathf.RoundToInt(hit.point.y),Mathf.RoundToInt(hit.point.z));
+                if (useGrid) position = SnapPositionToGrid(position);
                 if (Input.GetKeyDown(KeyCode.Mouse0)) {
                     m_brickStart = position;
                 }
-                if (Input.GetKey(KeyCode.Mouse0))
-                {
+                if (Input.GetKey(KeyCode.Mouse0)) {
                     var height = position.y + m_height;
-                    if (useGrid) height = Mathf.RoundToInt(height);
+                    if (useGrid) height = SnapFloatToGrid(height);
                     m_brickEnd = new Vector3(position.x, height, position.z);
                 }
                 if (Input.GetKeyUp(KeyCode.Mouse0)) {
                     var height = position.y + m_height;
-                    if (useGrid) height = Mathf.RoundToInt(height);
+                    if (useGrid) height = SnapFloatToGrid(height);
                     m_brickEnd = new Vector3(position.x, height, position.z);
                     PlaceBrick(m_brickStart, m_brickEnd);
                 }
@@ -39,7 +39,15 @@ namespace Boxey.Bricks.Core {
         private void PlaceBrick(Vector3 start, Vector3 end) {
             m_bricks.Add(new Brick(start, end));
         }
-
+        private Vector3 SnapPositionToGrid(Vector3 position) {
+            var snappedX = Mathf.Round(position.x / gridSize) * gridSize;
+            var snappedY = Mathf.Round(position.y / gridSize) * gridSize;
+            var snappedZ = Mathf.Round(position.z / gridSize) * gridSize;
+            return new Vector3(snappedX, snappedY, snappedZ);
+        }
+        private float SnapFloatToGrid(float value) {
+            return Mathf.Round(value / gridSize) * gridSize;
+        }
         private void OnDrawGizmos() {
             if (!Application.isPlaying) return;
             //Get Positions
