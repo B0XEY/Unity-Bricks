@@ -25,12 +25,12 @@ namespace Boxey.Bricks.Core {
                 if (Input.GetKey(KeyCode.Mouse0))
                 {
                     var height = position.y + m_height;
-                    if (useGrid) height = Mathf.RoundToInt(height)
+                    if (useGrid) height = Mathf.RoundToInt(height);
                     m_brickEnd = new Vector3(position.x, height, position.z);
                 }
                 if (Input.GetKeyUp(KeyCode.Mouse0)) {
                     var height = position.y + m_height;
-                    if (useGrid) height = Mathf.RoundToInt(height)
+                    if (useGrid) height = Mathf.RoundToInt(height);
                     m_brickEnd = new Vector3(position.x, height, position.z);
                     PlaceBrick(m_brickStart, m_brickEnd, height);
                 }
