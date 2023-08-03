@@ -504,7 +504,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: cea19bee1d1dfd8478205f460e31d8c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -699,6 +699,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d98f276bfd71a3e488209feb9ecb50fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useGrid: 0
   playerCamera: {fileID: 330585545}
 --- !u!4 &1739765190
 Transform:

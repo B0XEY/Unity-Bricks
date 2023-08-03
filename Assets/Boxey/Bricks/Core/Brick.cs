@@ -20,9 +20,9 @@ namespace Boxey.Bricks.Core {
             m_brickRenderer = BrickObject.AddComponent<MeshRenderer>();
             m_brickCollider = BrickObject.AddComponent<MeshCollider>();
             ClearData();
-            CreateMesh(brickEnd - brickStart, brickHeight);
+            CreateMesh(brickEnd - brickStart);
         }
-        private void CreateMesh(Vector3 brickEnd, float height) {
+        private void CreateMesh(Vector3 brickEnd) {
             var start = Vector3.zero;
             var vertices = new Vector3[8] {
                 new (start.x, start.y, start.z),
@@ -36,29 +36,40 @@ namespace Boxey.Bricks.Core {
             };
             var triangles = new int[36] {
                 // Front
-                0, 1, 2,
-                2, 1, 3,
+                0, 2, 1,
+                2, 3, 1,
                 // Back
-                5, 4, 7,
-                7, 4, 6,
+                5, 7, 4,
+                7, 6, 4,
                 // Left
-                4, 0, 6,
-                6, 0, 2,
+                4, 6, 0,
+                6, 2, 0,
                 // Right
-                1, 5, 3,
-                3, 5, 7,
+                1, 3, 5,
+                3, 7, 5,
                 // Top
-                2, 3, 6,
-                6, 3, 7,
+                2, 6, 3,
+                6, 7, 3,
                 // Bottom
-                1, 0, 5,
-                5, 0, 4
+                1, 5, 0,
+                5, 4, 0
             };
+            var normals = new Vector3[8] {
+                Vector3.left,
+                Vector3.right,
+                Vector3.down,
+                Vector3.up,
+                Vector3.forward,
+                Vector3.back,
+                Vector3.forward,
+                Vector3.back
+            };
+
             m_brickMesh.Clear();
             m_brickMesh.vertices = vertices;
             m_brickMesh.triangles = triangles;
-            m_brickMesh.RecalculateNormals();
-            
+            m_brickMesh.normals = normals;
+
             m_brickFilter.sharedMesh = m_brickMesh;
             m_brickCollider.sharedMesh = m_brickMesh;
             m_brickRenderer.sharedMaterial = new Material(Shader.Find("Universal Render Pipeline/Lit"));

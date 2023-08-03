@@ -14,8 +14,7 @@ namespace Boxey.Bricks.Core {
 
         private void Update() {
             var r = playerCamera.ScreenPointToRay(Input.mousePosition);
-            if (Input.GetKeyDown(KeyCode.Q)) m_height--;
-            if (Input.GetKeyDown(KeyCode.E)) m_height++;
+            m_height += Input.GetAxisRaw("Mouse ScrollWheel");
             if (Physics.Raycast(r, out var hit)) {
                 var position = hit.point;
                 if (useGrid) position = new Vector3(Mathf.RoundToInt(hit.point.x),Mathf.RoundToInt(hit.point.y),Mathf.RoundToInt(hit.point.z));
@@ -38,7 +37,7 @@ namespace Boxey.Bricks.Core {
         }
 
         private void PlaceBrick(Vector3 start, Vector3 end, float height) {
-            
+            m_bricks.Add(new Brick(start, end, height));
         }
 
         private void OnDrawGizmos() {
