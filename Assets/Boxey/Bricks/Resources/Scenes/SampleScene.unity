@@ -1038,7 +1038,7 @@ MonoBehaviour:
   previewFilter: {fileID: 11708576}
   useGrid: 0
   gridSize: 0.1
-  scrollStrength: 2
+  scrollStrength: 0.25
   playerCamera: {fileID: 330585545}
 --- !u!4 &1739765190
 Transform:

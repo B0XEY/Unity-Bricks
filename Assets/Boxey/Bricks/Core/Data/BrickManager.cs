@@ -40,6 +40,7 @@ namespace Boxey.Bricks.Core {
                 lookAtObject.position = position;
                 if (Input.GetKeyDown(KeyCode.Mouse0)) {
                     m_brickStart = position;
+                    m_height = gridSize;
                 }
                 if (Input.GetKey(KeyCode.Mouse0)) {
                     var height = position.y + m_height;
