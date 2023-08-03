@@ -40,20 +40,20 @@ namespace Boxey.Bricks.Core {
                     if (useGrid) height = SnapFloatToGrid(height);
                     m_brickEnd = new Vector3(position.x, height, position.z);
                     previewObject.position = m_brickStart;
-                    CreatePreviewMesh(position);
+                    CreatePreviewMesh(m_brickEnd - m_brickStart);
                 }
                 if (Input.GetKeyUp(KeyCode.Mouse0)) {
                     var height = position.y + m_height;
                     if (useGrid) height = SnapFloatToGrid(height);
                     m_brickEnd = new Vector3(position.x, height, position.z);
                     if (position == m_brickStart) return;
-                    PlaceBrick(m_brickStart, m_brickEnd);
+                    PlaceBrick(m_brickStart);
                 }
             }
         }
 
-        private void PlaceBrick(Vector3 start, Vector3 end) {
-            m_bricks.Add(new Brick(start, end));
+        private void PlaceBrick(Vector3 position) {
+            m_bricks.Add(new Brick(position, m_previewMesh));
             m_previewMesh.Clear();
         }
         private Vector3 SnapPositionToGrid(Vector3 position) {
@@ -69,35 +69,35 @@ namespace Boxey.Bricks.Core {
             var start = Vector3.zero;
             var vertices = new Vector3[24] {
                 // Front face
-                new (start.x, start.y, start.z),
-                new (brickEnd.x, start.y, start.z),
-                new (start.x, brickEnd.y, start.z),
-                new (brickEnd.x, brickEnd.y, start.z),
+                new Vector3(start.x, start.y, start.z),
+                new Vector3(brickEnd.x, start.y, start.z),
+                new Vector3(start.x, brickEnd.y, start.z),
+                new Vector3(brickEnd.x, brickEnd.y, start.z),
                 // Back face
-                new (start.x, start.y, brickEnd.z),
-                new (brickEnd.x, start.y, brickEnd.z),
-                new (start.x, brickEnd.y, brickEnd.z),
-                new (brickEnd.x, brickEnd.y, brickEnd.z),
+                new Vector3(start.x, start.y, brickEnd.z),
+                new Vector3(brickEnd.x, start.y, brickEnd.z),
+                new Vector3(start.x, brickEnd.y, brickEnd.z),
+                new Vector3(brickEnd.x, brickEnd.y, brickEnd.z),
                 // Left face
-                new (start.x, start.y, start.z),
-                new (start.x, brickEnd.y, start.z),
-                new (start.x, start.y, brickEnd.z),
-                new (start.x, brickEnd.y, brickEnd.z),
+                new Vector3(start.x, start.y, start.z),
+                new Vector3(start.x, brickEnd.y, start.z),
+                new Vector3(start.x, start.y, brickEnd.z),
+                new Vector3(start.x, brickEnd.y, brickEnd.z),
                 // Right face
-                new (brickEnd.x, start.y, start.z),
-                new (brickEnd.x, brickEnd.y, start.z),
-                new (brickEnd.x, start.y, brickEnd.z),
-                new (brickEnd.x, brickEnd.y, brickEnd.z),
+                new Vector3(brickEnd.x, start.y, start.z),
+                new Vector3(brickEnd.x, brickEnd.y, start.z),
+                new Vector3(brickEnd.x, start.y, brickEnd.z),
+                new Vector3(brickEnd.x, brickEnd.y, brickEnd.z),
                 // Top face
-                new (start.x, brickEnd.y, start.z),
-                new (brickEnd.x, brickEnd.y, start.z),
-                new (start.x, brickEnd.y, brickEnd.z),
-                new (brickEnd.x, brickEnd.y, brickEnd.z),
+                new Vector3(start.x, brickEnd.y, start.z),
+                new Vector3(brickEnd.x, brickEnd.y, start.z),
+                new Vector3(start.x, brickEnd.y, brickEnd.z),
+                new Vector3(brickEnd.x, brickEnd.y, brickEnd.z),
                 // Bottom face
-                new (start.x, start.y, start.z),
-                new (brickEnd.x, start.y, start.z),
-                new (start.x, start.y, brickEnd.z),
-                new (brickEnd.x, start.y, brickEnd.z)
+                new Vector3(start.x, start.y, start.z),
+                new Vector3(brickEnd.x, start.y, start.z),
+                new Vector3(start.x, start.y, brickEnd.z),
+                new Vector3(brickEnd.x, start.y, brickEnd.z)
             };
             var triangles = new int[36] {
                 // Front
