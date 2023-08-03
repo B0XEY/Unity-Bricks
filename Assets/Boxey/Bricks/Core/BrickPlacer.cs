@@ -18,6 +18,7 @@ namespace Boxey.Bricks.Core {
         [Header("Data")]
         [SerializeField] private bool useGrid;
         [SerializeField] private float gridSize = 1f;
+        [SerializeField] private float scrollStrength = 1.5f;
         [SerializeField] private Camera playerCamera;
 
         private void Awake() {
@@ -28,8 +29,10 @@ namespace Boxey.Bricks.Core {
 
         private void Update() {
             var r = playerCamera.ScreenPointToRay(Input.mousePosition);
-            m_height += Input.GetAxisRaw("Mouse ScrollWheel");
-            previewObject.position = m_brickStart;
+            m_height += Input.GetAxisRaw("Mouse ScrollWheel") * scrollStrength;
+            var previewPos = m_brickStart;
+            previewPos.y += 0.01f;
+            previewObject.position = previewPos;
             if (Physics.Raycast(r, out var hit)) {
                 var position = hit.point;
                 if (useGrid) position = SnapPositionToGrid(position);
