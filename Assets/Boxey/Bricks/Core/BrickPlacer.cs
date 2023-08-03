@@ -39,9 +39,8 @@ namespace Boxey.Bricks.Core {
                     var height = position.y + m_height;
                     if (useGrid) height = SnapFloatToGrid(height);
                     m_brickEnd = new Vector3(position.x, height, position.z);
-                    
                     previewObject.position = m_brickStart;
-                    CreatePreviewMesh();
+                    CreatePreviewMesh(position);
                 }
                 if (Input.GetKeyUp(KeyCode.Mouse0)) {
                     var height = position.y + m_height;
@@ -66,39 +65,39 @@ namespace Boxey.Bricks.Core {
         private float SnapFloatToGrid(float value) {
             return Mathf.Round(value / gridSize) * gridSize;
         }
-        private void CreatePreviewMesh() {
+        private void CreatePreviewMesh(Vector3 brickEnd) {
             var start = Vector3.zero;
             var vertices = new Vector3[24] {
                 // Front face
                 new (start.x, start.y, start.z),
-                new (m_brickEnd.x, start.y, start.z),
-                new (start.x, m_brickEnd.y, start.z),
-                new (m_brickEnd.x, m_brickEnd.y, start.z),
+                new (brickEnd.x, start.y, start.z),
+                new (start.x, brickEnd.y, start.z),
+                new (brickEnd.x, brickEnd.y, start.z),
                 // Back face
-                new (start.x, start.y, m_brickEnd.z),
-                new (m_brickEnd.x, start.y, m_brickEnd.z),
-                new (start.x, m_brickEnd.y, m_brickEnd.z),
-                new (m_brickEnd.x, m_brickEnd.y, m_brickEnd.z),
+                new (start.x, start.y, brickEnd.z),
+                new (brickEnd.x, start.y, brickEnd.z),
+                new (start.x, brickEnd.y, brickEnd.z),
+                new (brickEnd.x, brickEnd.y, brickEnd.z),
                 // Left face
                 new (start.x, start.y, start.z),
-                new (start.x, m_brickEnd.y, start.z),
-                new (start.x, start.y, m_brickEnd.z),
-                new (start.x, m_brickEnd.y, m_brickEnd.z),
+                new (start.x, brickEnd.y, start.z),
+                new (start.x, start.y, brickEnd.z),
+                new (start.x, brickEnd.y, brickEnd.z),
                 // Right face
-                new (m_brickEnd.x, start.y, start.z),
-                new (m_brickEnd.x, m_brickEnd.y, start.z),
-                new (m_brickEnd.x, start.y, m_brickEnd.z),
-                new (m_brickEnd.x, m_brickEnd.y, m_brickEnd.z),
+                new (brickEnd.x, start.y, start.z),
+                new (brickEnd.x, brickEnd.y, start.z),
+                new (brickEnd.x, start.y, brickEnd.z),
+                new (brickEnd.x, brickEnd.y, brickEnd.z),
                 // Top face
-                new (start.x, m_brickEnd.y, start.z),
-                new (m_brickEnd.x, m_brickEnd.y, start.z),
-                new (start.x, m_brickEnd.y, m_brickEnd.z),
-                new (m_brickEnd.x, m_brickEnd.y, m_brickEnd.z),
+                new (start.x, brickEnd.y, start.z),
+                new (brickEnd.x, brickEnd.y, start.z),
+                new (start.x, brickEnd.y, brickEnd.z),
+                new (brickEnd.x, brickEnd.y, brickEnd.z),
                 // Bottom face
                 new (start.x, start.y, start.z),
-                new (m_brickEnd.x, start.y, start.z),
-                new (start.x, start.y, m_brickEnd.z),
-                new (m_brickEnd.x, start.y, m_brickEnd.z)
+                new (brickEnd.x, start.y, start.z),
+                new (start.x, start.y, brickEnd.z),
+                new (brickEnd.x, start.y, brickEnd.z)
             };
             var triangles = new int[36] {
                 // Front
