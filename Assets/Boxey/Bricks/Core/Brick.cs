@@ -15,8 +15,8 @@ namespace Boxey.Bricks.Core {
         private MeshCollider m_brickCollider;
         
         public Brick(Vector3 brickLocation, Vector2 brickStart, Vector2 brickEnd, float brickHeight) {
+            ClearData();
             CreateData(brickEnd - brickStart, brickHeight);
-            //Create mesh and gameObject
         }
 
 
@@ -35,6 +35,16 @@ namespace Boxey.Bricks.Core {
                 m_brickVerts.Add(vert);
                 m_brickTriangles.Add(m_brickVerts.Count - 1);
             }
+        }
+
+        private void CreateMesh()
+        {
+            
+        }
+        private void ClearData() {
+            m_brickMesh.Clear();
+            m_brickVerts = new List<Vector3>;
+            m_brickTriangles = new List<int>;
         }
     }
 }

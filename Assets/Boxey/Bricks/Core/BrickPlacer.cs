@@ -4,11 +4,12 @@ using UnityEngine;
 
 namespace Boxey.Bricks.Core {
     public class BrickPlacer : MonoBehaviour {
-        private List<Brick> m_bricks; // List of all bricks placed
+        private List<Brick> m_bricks = new List<Brick>(); // List of all bricks placed
         private float m_height;
         private Vector3 m_brickStart;
         private Vector3 m_brickEnd;
 
+        [SerializeField] private bool useGrid;
         [SerializeField] private Camera playerCamera;
 
         private void Update() {
@@ -16,62 +17,66 @@ namespace Boxey.Bricks.Core {
             if (Input.GetKeyDown(KeyCode.Q)) m_height--;
             if (Input.GetKeyDown(KeyCode.E)) m_height++;
             if (Physics.Raycast(r, out var hit)) {
-                var position = new Vector3(Mathf.RoundToInt(hit.point.x),Mathf.RoundToInt(hit.point.y),Mathf.RoundToInt(hit.point.z));
+                var position = hit.point;
+                if (useGrid) position = new Vector3(Mathf.RoundToInt(hit.point.x),Mathf.RoundToInt(hit.point.y),Mathf.RoundToInt(hit.point.z));
                 if (Input.GetKeyDown(KeyCode.Mouse0)) {
                     m_brickStart = position;
                 }
-                if (Input.GetKey(KeyCode.Mouse0)) {
-                    m_brickEnd = new Vector3(position.x, position.y + m_height, position.z);
+                if (Input.GetKey(KeyCode.Mouse0))
+                {
+                    var height = position.y + m_height;
+                    if (useGrid) height = Mathf.RoundToInt(height)
+                    m_brickEnd = new Vector3(position.x, height, position.z);
                 }
                 if (Input.GetKeyUp(KeyCode.Mouse0)) {
-                    m_brickEnd = new Vector3(position.x, position.y + m_height, position.z);
-                    //PlaceBrick(m_brickStart, m_brickEnd, height);
+                    var height = position.y + m_height;
+                    if (useGrid) height = Mathf.RoundToInt(height)
+                    m_brickEnd = new Vector3(position.x, height, position.z);
+                    PlaceBrick(m_brickStart, m_brickEnd, height);
                 }
             }
         }
 
         private void PlaceBrick(Vector3 start, Vector3 end, float height) {
-            //get start point
-            //get end point
-            //draw debug mesh
-            //create the brick from the 2 points
-            //add Bricks to all brick
+            
         }
 
         private void OnDrawGizmos() {
             if (!Application.isPlaying) return;
             //Get Positions
-            var below = new Vector3(m_brickStart.x, m_brickEnd.y, m_brickStart.z); // Below
-            var position1 = new Vector3(m_brickStart.x, m_brickStart.y, m_brickEnd.z); // Corner 1
-            var position2 = new Vector3(m_brickEnd.x, m_brickStart.y, m_brickStart.z); // Corner 2
-            var above = new Vector3(m_brickEnd.x, m_brickStart.y, m_brickEnd.z); // Above
-            var position4 = new Vector3(m_brickEnd.x, m_brickEnd.y, m_brickStart.z); // Corner 3
-            var position5 = new Vector3(m_brickStart.x, m_brickEnd.y, m_brickEnd.z); // Corner 3
+            var start = m_brickStart;
+            var end = m_brickEnd;
+            var position0 = new Vector3(start.x, end.y, start.z); // Below
+            var position1 = new Vector3(start.x, start.y, end.z); // Corner 1
+            var position2 = new Vector3(end.x, start.y, start.z); // Corner 2
+            var position3 = new Vector3(end.x, start.y, end.z); // Above
+            var position4 = new Vector3(end.x, end.y, start.z); // Corner 3
+            var position5 = new Vector3(start.x, end.y, end.z); // Corner 3
             //Draw
             Gizmos.color = Color.gray;
-            Gizmos.DrawSphere(m_brickStart, .1f);
-            Gizmos.DrawSphere(m_brickEnd, .1f);
-            Gizmos.DrawSphere(below, .1f);
+            Gizmos.DrawSphere(start, .1f);
+            Gizmos.DrawSphere(end, .1f);
+            Gizmos.DrawSphere(position0, .1f);
             Gizmos.DrawSphere(position1, .1f);
             Gizmos.DrawSphere(position2, .1f);
-            Gizmos.DrawSphere(above, .1f);
+            Gizmos.DrawSphere(position3, .1f);
             Gizmos.DrawSphere(position4, .1f);
             Gizmos.DrawSphere(position5, .1f);
             //Draw Lines
-            Gizmos.DrawLine(m_brickStart, below);
-            Gizmos.DrawLine(m_brickStart, position1);
-            Gizmos.DrawLine(m_brickStart, position2);
+            Gizmos.DrawLine(start, position0);
+            Gizmos.DrawLine(start, position1);
+            Gizmos.DrawLine(start, position2);
             
-            Gizmos.DrawLine(above, position1);
-            Gizmos.DrawLine(above, position2);
+            Gizmos.DrawLine(position3, position1);
+            Gizmos.DrawLine(position3, position2);
             Gizmos.DrawLine(position2, position4);
             Gizmos.DrawLine(position1, position5);
-            Gizmos.DrawLine(below, position4);
-            Gizmos.DrawLine(below, position5);
+            Gizmos.DrawLine(position0, position4);
+            Gizmos.DrawLine(position0, position5);
 
-            Gizmos.DrawLine(m_brickEnd, above);
-            Gizmos.DrawLine(m_brickEnd, position4);
-            Gizmos.DrawLine(m_brickEnd, position5);
+            Gizmos.DrawLine(end, position3);
+            Gizmos.DrawLine(end, position4);
+            Gizmos.DrawLine(end, position5);
         }
     }
 }
