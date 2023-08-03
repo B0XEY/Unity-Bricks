@@ -11,7 +11,7 @@ namespace Boxey.Bricks.Core {
         
         public Brick(Vector3 brickStart, Vector3 brickEnd) {
             var position = brickStart;
-            position.y += 0.00001f;
+            position.y += 0.01f;
             BrickObject = new GameObject {
                 name = "Brick: " + brickStart,
                 transform = {
@@ -66,8 +66,8 @@ namespace Boxey.Bricks.Core {
                 0, 2, 1,
                 1, 2, 3,
                 // Back
-                4, 6, 5,
-                5, 6, 7,
+                5, 7, 4,
+                4, 7, 6,
                 // Left
                 8, 10, 9,
                 9, 10, 11,
@@ -86,11 +86,23 @@ namespace Boxey.Bricks.Core {
             for (int i = 0; i < 4; i++) {
                 normals[i] = Vector3.forward;
                 normals[i + 4] = Vector3.back;
-                normals[i + 8] = Vector3.left;
-                normals[i + 12] = Vector3.right;
-                normals[i + 16] = Vector3.up;
-                normals[i + 20] = Vector3.down;
             }
+            normals[8] = Vector3.left;
+            normals[9] = Vector3.left;
+            normals[10] = Vector3.left;
+            normals[11] = Vector3.left;
+            normals[12] = Vector3.right;
+            normals[13] = Vector3.right;
+            normals[14] = Vector3.right;
+            normals[15] = Vector3.right;
+            normals[16] = Vector3.up;
+            normals[17] = Vector3.up;
+            normals[18] = Vector3.up;
+            normals[19] = Vector3.up;
+            normals[20] = Vector3.down;
+            normals[21] = Vector3.down;
+            normals[22] = Vector3.down;
+            normals[23] = Vector3.down;
             m_brickMesh.Clear();
             m_brickMesh.vertices = vertices;
             m_brickMesh.triangles = triangles;
