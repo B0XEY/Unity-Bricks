@@ -1033,13 +1033,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d98f276bfd71a3e488209feb9ecb50fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lookAtObject: {fileID: 1088612312}
   previewObj: {fileID: 11708578}
   previewFilter: {fileID: 11708576}
-  useGrid: 0
+  useGrid: 1
   gridSize: 0.1
-  scrollStrength: 0.25
+  scrollStrength: 1
   playerCamera: {fileID: 330585545}
+  numToPlace: 1
+  length: 0
 --- !u!4 &1739765190
 Transform:
   m_ObjectHideFlags: 0
