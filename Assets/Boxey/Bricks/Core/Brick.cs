@@ -11,7 +11,10 @@ namespace Boxey.Bricks.Core {
         
         public Brick(Vector3 brickStart, Vector3 brickEnd, float brickHeight) {
             BrickObject = new GameObject {
-                name = "Brick: " + brickStart
+                name = "Brick: " + brickStart,
+                transform = {
+                    position = brickStart
+                }
             };
             m_brickMesh = new Mesh {
                 name = "Brick Mesh"
