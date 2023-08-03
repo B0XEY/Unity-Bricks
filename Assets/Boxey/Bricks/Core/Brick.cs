@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Boxey.Bricks.Core {
     public class Brick {
@@ -59,9 +58,11 @@ namespace Boxey.Bricks.Core {
             m_brickMesh.vertices = vertices;
             m_brickMesh.triangles = triangles;
             m_brickMesh.RecalculateNormals();
+            
             m_brickFilter.sharedMesh = m_brickMesh;
             m_brickCollider.sharedMesh = m_brickMesh;
             m_brickRenderer.sharedMaterial = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+            m_brickRenderer.sharedMaterial.color = Random.ColorHSV();
         }
         private void ClearData() {
             m_brickMesh.Clear();
