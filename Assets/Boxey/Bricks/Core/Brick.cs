@@ -71,38 +71,42 @@ namespace Boxey.Bricks.Core {
                 // Left
                 8, 10, 9,
                 9, 10, 11,
-                // Right
+                // Right X
                 12, 14, 13,
                 13, 14, 15,
                 // Top
                 16, 18, 17,
                 17, 18, 19,
-                // Bottom
+                // Bottom X
                 20, 22, 21,
                 21, 22, 23
             };
-            Vector3[] normals = new Vector3[24];
-            // Assign the correct normals to each vertex
-            for (int i = 0; i < 4; i++) {
-                normals[i] = Vector3.forward;
-                normals[i + 4] = Vector3.back;
-            }
-            normals[8] = Vector3.left;
-            normals[9] = Vector3.left;
-            normals[10] = Vector3.left;
-            normals[11] = Vector3.left;
-            normals[12] = Vector3.right;
-            normals[13] = Vector3.right;
-            normals[14] = Vector3.right;
-            normals[15] = Vector3.right;
-            normals[16] = Vector3.up;
-            normals[17] = Vector3.up;
-            normals[18] = Vector3.up;
-            normals[19] = Vector3.up;
-            normals[20] = Vector3.down;
-            normals[21] = Vector3.down;
-            normals[22] = Vector3.down;
-            normals[23] = Vector3.down;
+            var normals = new Vector3[24] {
+                Vector3.forward,
+                Vector3.forward,
+                Vector3.forward,
+                Vector3.forward,
+                Vector3.back,
+                Vector3.back,
+                Vector3.back,
+                Vector3.back,
+                Vector3.left,
+                Vector3.left,
+                Vector3.left,
+                Vector3.left,
+                Vector3.right,
+                Vector3.right,
+                Vector3.right,
+                Vector3.right,
+                Vector3.up,
+                Vector3.up,
+                Vector3.up,
+                Vector3.up,
+                Vector3.down,
+                Vector3.down,
+                Vector3.down,
+                Vector3.down
+            };
             m_brickMesh.Clear();
             m_brickMesh.vertices = vertices;
             m_brickMesh.triangles = triangles;
