@@ -31,6 +31,7 @@ namespace Boxey.Bricks.Core {
                     var height = position.y + m_height;
                     if (useGrid) height = SnapFloatToGrid(height);
                     m_brickEnd = new Vector3(position.x, height, position.z);
+                    if (m_brickEnd == m_brickStart) return;
                     PlaceBrick(m_brickStart, m_brickEnd);
                 }
             }
