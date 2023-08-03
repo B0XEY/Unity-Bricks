@@ -29,55 +29,77 @@ namespace Boxey.Bricks.Core {
         }
         private void CreateMesh(Vector3 brickEnd) {
             var start = Vector3.zero;
-            var vertices = new Vector3[8] {
-                new (start.x, start.y, start.z),
-                new (brickEnd.x, start.y, start.z),
-                new (start.x, brickEnd.y, start.z),
-                new (brickEnd.x, brickEnd.y, start.z),
-                new (start.x, start.y, brickEnd.z),
-                new (brickEnd.x, start.y, brickEnd.z),
-                new (start.x, brickEnd.y, brickEnd.z),
-                new (brickEnd.x, brickEnd.y, brickEnd.z)
+            var vertices = new Vector3[24] {
+                // Front face
+                new Vector3(start.x, start.y, start.z),
+                new Vector3(brickEnd.x, start.y, start.z),
+                new Vector3(start.x, brickEnd.y, start.z),
+                new Vector3(brickEnd.x, brickEnd.y, start.z),
+                // Back face
+                new Vector3(start.x, start.y, brickEnd.z),
+                new Vector3(brickEnd.x, start.y, brickEnd.z),
+                new Vector3(start.x, brickEnd.y, brickEnd.z),
+                new Vector3(brickEnd.x, brickEnd.y, brickEnd.z),
+                // Left face
+                new Vector3(start.x, start.y, start.z),
+                new Vector3(start.x, brickEnd.y, start.z),
+                new Vector3(start.x, start.y, brickEnd.z),
+                new Vector3(start.x, brickEnd.y, brickEnd.z),
+                // Right face
+                new Vector3(brickEnd.x, start.y, start.z),
+                new Vector3(brickEnd.x, brickEnd.y, start.z),
+                new Vector3(brickEnd.x, start.y, brickEnd.z),
+                new Vector3(brickEnd.x, brickEnd.y, brickEnd.z),
+                // Top face
+                new Vector3(start.x, brickEnd.y, start.z),
+                new Vector3(brickEnd.x, brickEnd.y, start.z),
+                new Vector3(start.x, brickEnd.y, brickEnd.z),
+                new Vector3(brickEnd.x, brickEnd.y, brickEnd.z),
+                // Bottom face
+                new Vector3(start.x, start.y, start.z),
+                new Vector3(brickEnd.x, start.y, start.z),
+                new Vector3(start.x, start.y, brickEnd.z),
+                new Vector3(brickEnd.x, start.y, brickEnd.z)
             };
             var triangles = new int[36] {
                 // Front
                 0, 2, 1,
-                2, 3, 1,
+                1, 2, 3,
                 // Back
-                5, 7, 4,
-                7, 6, 4,
+                4, 6, 5,
+                5, 6, 7,
                 // Left
-                4, 6, 0,
-                6, 2, 0,
+                8, 10, 9,
+                9, 10, 11,
                 // Right
-                1, 3, 5,
-                3, 7, 5,
+                12, 14, 13,
+                13, 14, 15,
                 // Top
-                2, 6, 3,
-                6, 7, 3,
+                16, 18, 17,
+                17, 18, 19,
                 // Bottom
-                1, 5, 0,
-                5, 4, 0
+                20, 22, 21,
+                21, 22, 23
             };
-            var normals = new Vector3[8] {
-                Vector3.right,
-                Vector3.left,
-                Vector3.up,
-                Vector3.down,
-                Vector3.back,
-                Vector3.forward,
-                Vector3.back,
-                Vector3.forward
-            };
-
+            Vector3[] normals = new Vector3[24];
+            // Assign the correct normals to each vertex
+            for (int i = 0; i < 4; i++) {
+                normals[i] = Vector3.forward;
+                normals[i + 4] = Vector3.back;
+                normals[i + 8] = Vector3.left;
+                normals[i + 12] = Vector3.right;
+                normals[i + 16] = Vector3.up;
+                normals[i + 20] = Vector3.down;
+            }
             m_brickMesh.Clear();
             m_brickMesh.vertices = vertices;
             m_brickMesh.triangles = triangles;
-            m_brickMesh.normals = normals;
+            m_brickMesh.RecalculateNormals();
 
             m_brickFilter.sharedMesh = m_brickMesh;
             m_brickCollider.sharedMesh = m_brickMesh;
             m_brickRenderer.sharedMaterial = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+            m_brickRenderer.sharedMaterial.SetFloat("_Smoothness", 0);
             m_brickRenderer.sharedMaterial.color = Random.ColorHSV();
         }
         private void ClearData() {
