@@ -31,7 +31,7 @@ namespace Boxey.Bricks.Core {
             var r = playerCamera.ScreenPointToRay(Input.mousePosition);
             m_height += Input.GetAxisRaw("Mouse ScrollWheel") * scrollStrength;
             var previewPos = m_brickStart;
-            previewPos.y += 0.0001f;
+            previewPos.y += 0.001f;
             previewObject.position = previewPos;
             if (Physics.Raycast(r, out var hit)) {
                 var position = hit.point;

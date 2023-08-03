@@ -11,7 +11,7 @@ namespace Boxey.Bricks.Core {
         
         public Brick(Vector3 brickStart, Vector3 brickEnd) {
             var position = brickStart;
-            position.y += 0.0001f;
+            position.y += 0.001f;
             BrickObject = new GameObject {
                 name = "Brick: " + brickStart,
                 transform = {
